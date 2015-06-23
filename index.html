@@ -10,16 +10,24 @@
 
   <p>You should see a greeting above. It is created by the <a href="http://elm-lang.org/" target="_blank">Elm</a> application.</p>
 
+  <button onclick="callIncrement()">Call the Custom Element's increment() method</button>
+
   <p>
     <a href="https://github.com/ohanhi/elm-ement">Source code</a>
   </p>
 
   <script src="elm.js"></script>
   <script>
+  function callIncrement() {
+    document.getElementsByTagName('elm-ement')[0].increment();
+  }
+
+
   var ElmEmentProto = Object.create(HTMLElement.prototype);
 
-  ElmEmentProto.foo = function(argument) {
-    console.log('FOO!', argument);
+  ElmEmentProto.increment = function() {
+    console.log('Increment!');
+    hello.ports.increment.send([]);
   };
 
   ElmEmentProto.attachedCallback = function() {
@@ -29,7 +37,7 @@
   ElmEmentProto.createdCallback = function() {
     this.innerHTML = "<div id='elm'></div>";
     var div = document.getElementById('elm');
-    Elm.embed(Elm.Main, div);
+    window.hello = Elm.embed(Elm.Hello, div, { increment: [] });
   };
 
   var ElmEment = document.registerElement(

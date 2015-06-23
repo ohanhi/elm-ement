@@ -1542,6 +1542,48 @@ Elm.Graphics.Element.make = function (_elm) {
                                   ,Position: Position};
    return _elm.Graphics.Element.values;
 };
+Elm.Hello = Elm.Hello || {};
+Elm.Hello.make = function (_elm) {
+   "use strict";
+   _elm.Hello = _elm.Hello || {};
+   if (_elm.Hello.values)
+   return _elm.Hello.values;
+   var _op = {},
+   _N = Elm.Native,
+   _U = _N.Utils.make(_elm),
+   _L = _N.List.make(_elm),
+   $moduleName = "Hello",
+   $Basics = Elm.Basics.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var view = function (n) {
+      return $Graphics$Element.show(A2($Basics._op["++"],
+      "Hello Web Components! Click count: ",
+      $Basics.toString(n)));
+   };
+   var increment = Elm.Native.Port.make(_elm).inboundSignal("increment",
+   "()",
+   function (v) {
+      return typeof v === "object" && v instanceof Array ? {ctor: "_Tuple0"} : _U.badPort("an array",
+      v);
+   });
+   var total = A3($Signal.foldp,
+   F2(function (x,y) {
+      return x + y;
+   }),
+   0,
+   A2($Signal._op["<~"],
+   $Basics.always(1),
+   increment));
+   var main = A2($Signal._op["<~"],
+   view,
+   total);
+   _elm.Hello.values = {_op: _op
+                       ,total: total
+                       ,view: view
+                       ,main: main};
+   return _elm.Hello.values;
+};
 Elm.List = Elm.List || {};
 Elm.List.make = function (_elm) {
    "use strict";
@@ -1896,23 +1938,6 @@ Elm.List.make = function (_elm) {
                       ,sortBy: sortBy
                       ,sortWith: sortWith};
    return _elm.List.values;
-};
-Elm.Main = Elm.Main || {};
-Elm.Main.make = function (_elm) {
-   "use strict";
-   _elm.Main = _elm.Main || {};
-   if (_elm.Main.values)
-   return _elm.Main.values;
-   var _op = {},
-   _N = Elm.Native,
-   _U = _N.Utils.make(_elm),
-   _L = _N.List.make(_elm),
-   $moduleName = "Main",
-   $Graphics$Element = Elm.Graphics.Element.make(_elm);
-   var main = $Graphics$Element.show("Hello Web Components!");
-   _elm.Main.values = {_op: _op
-                      ,main: main};
-   return _elm.Main.values;
 };
 Elm.Maybe = Elm.Maybe || {};
 Elm.Maybe.make = function (_elm) {
