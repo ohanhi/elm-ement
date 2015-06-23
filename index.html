@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>elm-ement</title>
+</head>
+<body>
+
+  <elm-ement></elm-ement>
+
+  <script src="elm.js"></script>
+  <script>
+  var ElmEmentProto = Object.create(HTMLElement.prototype);
+
+  ElmEmentProto.foo = function(argument) {
+    console.log('FOO!', argument);
+  };
+
+  ElmEmentProto.attachedCallback = function() {
+    console.log('attachedCallback()');
+  };
+
+  ElmEmentProto.createdCallback = function() {
+    this.innerHTML = "<div id='elm'></div>";
+    var div = document.getElementById('elm');
+    Elm.embed(Elm.Main, div);
+  };
+
+  var ElmEment = document.registerElement(
+      'elm-ement',
+      { prototype: ElmEmentProto }
+    );
+  </script>
+</body>
+</html>
