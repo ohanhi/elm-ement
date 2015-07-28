@@ -6,7 +6,7 @@
 </head>
 <body>
 
-  <elm-ement></elm-ement>
+  <elm-ement greeting="Hello"></elm-ement>
 
   <p>You should see a greeting above. It is created by the <a href="http://elm-lang.org/" target="_blank">Elm</a> application.</p>
 
@@ -41,7 +41,14 @@
   ElmEmentProto.createdCallback = function() {
     var div = document.createElement('div');
     this.appendChild(div);
-    this.hello = Elm.embed(Elm.Hello, div, { increment: [] });
+    this.hello = Elm.embed(Elm.Hello, div, {
+      increment: [],
+      greeting: this.getAttribute("greeting"),
+    });
+  };
+
+  ElmEmentProto.attributeChangedCallback = function(attribute, _, value) {
+    this.hello.ports.greeting.send(value);
   };
 
   var ElmEment = document.registerElement(
