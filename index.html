@@ -19,7 +19,11 @@
   <script src="elm.js"></script>
   <script>
   function callIncrement() {
-    document.getElementsByTagName('elm-ement')[0].increment();
+    Array.prototype.slice.call(document.getElementsByTagName('elm-ement'))
+      .forEach(function(elmEment) {
+        elmEment.increment();
+      })
+    ;
   }
 
 
@@ -27,7 +31,7 @@
 
   ElmEmentProto.increment = function() {
     console.log('Increment!');
-    hello.ports.increment.send([]);
+    this.hello.ports.increment.send([]);
   };
 
   ElmEmentProto.attachedCallback = function() {
@@ -35,9 +39,9 @@
   };
 
   ElmEmentProto.createdCallback = function() {
-    this.innerHTML = "<div id='elm'></div>";
-    var div = document.getElementById('elm');
-    window.hello = Elm.embed(Elm.Hello, div, { increment: [] });
+    var div = document.createElement('div');
+    this.appendChild(div);
+    this.hello = Elm.embed(Elm.Hello, div, { increment: [] });
   };
 
   var ElmEment = document.registerElement(
