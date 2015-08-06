@@ -1,4 +1,6 @@
-# elm-ement
+# &lt;elm-ement&gt;
+
+**[Go check it out! →](http://ohanhi.github.io/elm-ement/)**
 
 This is a proof of concept displaying the possibility to include standalone Elm applications as Custom Elements as per the [Web Components](http://webcomponents.org/) spec.
 
