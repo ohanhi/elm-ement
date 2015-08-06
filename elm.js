@@ -351,7 +351,7 @@ Elm.Color.make = function (_elm) {
                         ,saturation: s};
               }();}
          _U.badCase($moduleName,
-         "between lines 114 and 121");
+         "between lines 114 and 118");
       }();
    };
    var HSLA = F4(function (a,
@@ -407,7 +407,7 @@ Elm.Color.make = function (_elm) {
                  color._3);
               }();}
          _U.badCase($moduleName,
-         "between lines 105 and 111");
+         "between lines 105 and 108");
       }();
    };
    var grayscale = function (p) {
@@ -771,7 +771,7 @@ Elm.Graphics.Collage.make = function (_elm) {
                               ,["y",f.y + _v0._1]],
               f);}
          _U.badCase($moduleName,
-         "on line 226, column 7 to 35");
+         "on line 226, column 3 to 37");
       }();
    });
    var form = function (f) {
@@ -1454,7 +1454,7 @@ Elm.Graphics.Element.make = function (_elm) {
                  maxOrZero(ws),
                  $List.sum(hs));}
             _U.badCase($moduleName,
-            "between lines 362 and 373");
+            "between lines 362 and 368");
          }();
       }();
    });
@@ -1555,12 +1555,24 @@ Elm.Hello.make = function (_elm) {
    $moduleName = "Hello",
    $Basics = Elm.Basics.make(_elm),
    $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
-   var view = function (n) {
+   var view = F2(function (n,
+   greeting) {
       return $Graphics$Element.show(A2($Basics._op["++"],
-      "Hello Web Components! Click count: ",
-      $Basics.toString(n)));
-   };
+      greeting,
+      A2($Basics._op["++"],
+      " Web Components! Click count: ",
+      $Basics.toString(n))));
+   });
+   var greeting = Elm.Native.Port.make(_elm).inboundSignal("greeting",
+   "String",
+   function (v) {
+      return typeof v === "string" || typeof v === "object" && v instanceof String ? v : _U.badPort("a string",
+      v);
+   });
    var increment = Elm.Native.Port.make(_elm).inboundSignal("increment",
    "()",
    function (v) {
@@ -1575,9 +1587,11 @@ Elm.Hello.make = function (_elm) {
    A2($Signal._op["<~"],
    $Basics.always(1),
    increment));
-   var main = A2($Signal._op["<~"],
+   var main = A2($Signal._op["~"],
+   A2($Signal._op["<~"],
    view,
-   total);
+   total),
+   greeting);
    _elm.Hello.values = {_op: _op
                        ,total: total
                        ,view: view
@@ -1701,7 +1715,7 @@ Elm.List.make = function (_elm) {
             case "[]":
             return $Maybe.Nothing;}
          _U.badCase($moduleName,
-         "between lines 87 and 95");
+         "between lines 87 and 89");
       }();
    };
    var head = function (list) {
@@ -1712,7 +1726,7 @@ Elm.List.make = function (_elm) {
             case "[]":
             return $Maybe.Nothing;}
          _U.badCase($moduleName,
-         "between lines 75 and 84");
+         "between lines 75 and 77");
       }();
    };
    _op["::"] = $Native$List.cons;
@@ -1751,7 +1765,7 @@ Elm.List.make = function (_elm) {
             return A2(_op["::"],_v15._0,xs);
             case "Nothing": return xs;}
          _U.badCase($moduleName,
-         "between lines 179 and 186");
+         "between lines 179 and 181");
       }();
    });
    var filterMap = F2(function (f,
@@ -1898,7 +1912,7 @@ Elm.List.make = function (_elm) {
             case "[]":
             return _L.fromArray([]);}
          _U.badCase($moduleName,
-         "between lines 350 and 361");
+         "between lines 350 and 356");
       }();
    });
    _elm.List.values = {_op: _op
@@ -1958,7 +1972,7 @@ Elm.Maybe.make = function (_elm) {
             case "Nothing":
             return $default;}
          _U.badCase($moduleName,
-         "between lines 45 and 56");
+         "between lines 45 and 47");
       }();
    });
    var Nothing = {ctor: "Nothing"};
@@ -1971,11 +1985,11 @@ Elm.Maybe.make = function (_elm) {
                     case "Nothing":
                     return oneOf(maybes._1);}
                  _U.badCase($moduleName,
-                 "between lines 64 and 73");
+                 "between lines 64 and 66");
               }();
             case "[]": return Nothing;}
          _U.badCase($moduleName,
-         "between lines 59 and 73");
+         "between lines 59 and 66");
       }();
    };
    var andThen = F2(function (maybeValue,
@@ -2000,7 +2014,7 @@ Elm.Maybe.make = function (_elm) {
             return Just(f(maybe._0));
             case "Nothing": return Nothing;}
          _U.badCase($moduleName,
-         "between lines 76 and 107");
+         "between lines 76 and 78");
       }();
    });
    _elm.Maybe.values = {_op: _op
@@ -6307,7 +6321,7 @@ Elm.Result.make = function (_elm) {
             case "Ok":
             return $Maybe.Just(result._0);}
          _U.badCase($moduleName,
-         "between lines 164 and 177");
+         "between lines 164 and 166");
       }();
    };
    var Err = function (a) {
@@ -6322,7 +6336,7 @@ Elm.Result.make = function (_elm) {
             case "Ok":
             return callback(result._0);}
          _U.badCase($moduleName,
-         "between lines 126 and 145");
+         "between lines 126 and 128");
       }();
    });
    var Ok = function (a) {
@@ -6336,7 +6350,7 @@ Elm.Result.make = function (_elm) {
             case "Ok":
             return Ok(func(ra._0));}
          _U.badCase($moduleName,
-         "between lines 41 and 52");
+         "between lines 41 and 43");
       }();
    });
    var map2 = F3(function (func,
@@ -6490,7 +6504,7 @@ Elm.Result.make = function (_elm) {
                  return Err(_v39._4._0);}
               break;}
          _U.badCase($moduleName,
-         "between lines 82 and 123");
+         "between lines 82 and 88");
       }();
    });
    var formatError = F2(function (f,
@@ -6502,7 +6516,7 @@ Elm.Result.make = function (_elm) {
             case "Ok":
             return Ok(result._0);}
          _U.badCase($moduleName,
-         "between lines 148 and 161");
+         "between lines 148 and 150");
       }();
    });
    var fromMaybe = F2(function (err,
@@ -6633,7 +6647,7 @@ Elm.Signal.make = function (_elm) {
             case "[]":
             return $Debug.crash("mergeMany was given an empty list!");}
          _U.badCase($moduleName,
-         "between lines 177 and 197");
+         "between lines 177 and 182");
       }();
    };
    var foldp = $Native$Signal.foldp;

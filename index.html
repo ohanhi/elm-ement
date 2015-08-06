@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>elm-ement</title>
   <script src="webcomponents.js/webcomponents-lite.min.js"></script>
 </head>
 <body>
 
-  <elm-ement></elm-ement>
+  <elm-ement greeting="Hello"></elm-ement>
 
   <p>You should see a greeting above. It is created by the <a href="http://elm-lang.org/" target="_blank">Elm</a> application.</p>
 
   <button onclick="callIncrement()">Call the Custom Element's increment() method</button>
+  <button onclick="changeGreeting()">Change the `greeting` attribute</button>
 
   <p>
     <a href="https://github.com/ohanhi/elm-ement">Source code</a>
@@ -22,6 +24,16 @@
     Array.prototype.slice.call(document.getElementsByTagName('elm-ement'))
       .forEach(function(elmEment) {
         elmEment.increment();
+      })
+    ;
+  }
+
+  var greetingsPool = ['Howdy', 'Avast ye', 'How d’ya do', 'Nice to meet you,'];
+  function changeGreeting() {
+    Array.prototype.slice.call(document.getElementsByTagName('elm-ement'))
+      .forEach(function(elmEment) {
+        var index = Math.floor(Math.random() * greetingsPool.length);
+        elmEment.setAttribute('greeting', greetingsPool[index]);
       })
     ;
   }
@@ -41,7 +53,14 @@
   ElmEmentProto.createdCallback = function() {
     var div = document.createElement('div');
     this.appendChild(div);
-    this.hello = Elm.embed(Elm.Hello, div, { increment: [] });
+    this.hello = Elm.embed(Elm.Hello, div, {
+      increment: [],
+      greeting: this.getAttribute("greeting"),
+    });
+  };
+
+  ElmEmentProto.attributeChangedCallback = function(attribute, _, value) {
+    this.hello.ports.greeting.send(value);
   };
 
   var ElmEment = document.registerElement(
