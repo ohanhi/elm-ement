@@ -1,17 +1,60 @@
-module Hello where
+port module Hello exposing (..)
 
-import Graphics.Element exposing (..)
-import Signal exposing ((<~), (~), foldp)
+import Html exposing (Html)
 
-port increment : Signal ()
-port greeting : Signal String
 
-total : Signal Int
-total = foldp (+) 0 (always 1 <~ increment)
+type Msg
+    = Increment
+    | SetGreeting String
 
-view : Int -> String -> Element
-view n greeting =
-  show (greeting ++ " Web Components! Click count: " ++ toString n)
 
-main : Signal Element
-main = view <~ total ~ greeting
+type alias Model =
+    { count : Int
+    , greeting : String
+    }
+
+
+model : Model
+model =
+    { count = 0
+    , greeting = "Hello"
+    }
+
+
+port increment : (() -> msg) -> Sub msg
+
+
+port greeting : (String -> msg) -> Sub msg
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        Increment ->
+            ( { model | count = model.count + 1 }, Cmd.none )
+
+        SetGreeting greeting ->
+            ( { model | greeting = greeting }, Cmd.none )
+
+
+view : Model -> Html msg
+view { count, greeting } =
+    Html.text (greeting ++ " Web Components! Increments done: " ++ toString count)
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.batch
+        [ increment (\_ -> Increment)
+        , greeting SetGreeting
+        ]
+
+
+main : Program Never Model Msg
+main =
+    Html.program
+        { init = ( model, Cmd.none )
+        , update = update
+        , subscriptions = subscriptions
+        , view = view
+        }

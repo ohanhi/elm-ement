@@ -6,5 +6,4 @@ This is a proof of concept displaying the possibility to include standalone Elm 
 
 `<elm-ement>` does not do anything useful - it is merely a demonstration of how the beautiful functional [Elm language](http://elm-lang.org/) can be used interoperably with any other HTML5 content through the familiar Web Components system.
 
-Copyright &copy; 2015 Ossi Hanhinen.
 License: MIT

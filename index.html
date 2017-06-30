@@ -4,12 +4,19 @@
   <meta charset="utf-8">
   <title>elm-ement</title>
   <script src="webcomponents.js/webcomponents-lite.min.js"></script>
+  <style media="screen">
+    elm-ement {
+      display: block;
+      padding: 10px;
+      border: 1px dotted red;
+    }
+  </style>
 </head>
 <body>
 
-  <elm-ement greeting="Hello"></elm-ement>
+  <elm-ement greeting="Hello" id="elm-ement"></elm-ement>
 
-  <p>You should see a greeting above. It is created by the <a href="http://elm-lang.org/" target="_blank">Elm</a> application.</p>
+  <p>The contents of the dotted red box above are an <a href="http://elm-lang.org/" target="_blank">Elm</a> application inside a Custom Element: <code>&lt;elm-ement&gt;</code>.</p>
 
   <button onclick="callIncrement()">Call the Custom Element's increment() method</button>
   <button onclick="changeGreeting()">Change the `greeting` attribute</button>
@@ -20,22 +27,20 @@
 
   <script src="elm.js"></script>
   <script>
+  var element = document.getElementById("elm-ement")
+
   function callIncrement() {
-    Array.prototype.slice.call(document.getElementsByTagName('elm-ement'))
-      .forEach(function(elmEment) {
-        elmEment.increment();
-      })
-    ;
+    element.increment();
   }
 
   var greetingsPool = ['Howdy', 'Avast ye', 'How d’ya do', 'Nice to meet you,'];
   function changeGreeting() {
-    Array.prototype.slice.call(document.getElementsByTagName('elm-ement'))
-      .forEach(function(elmEment) {
-        var index = Math.floor(Math.random() * greetingsPool.length);
-        elmEment.setAttribute('greeting', greetingsPool[index]);
-      })
-    ;
+    var currentGreeting = element.getAttribute('greeting');
+    var greeting = greetingsPool[Math.floor(Math.random() * greetingsPool.length)];
+    while (greeting == currentGreeting) {
+      greeting = greetingsPool[Math.floor(Math.random() * greetingsPool.length)];
+    }
+    element.setAttribute('greeting', greeting);
   }
 
 
@@ -43,7 +48,7 @@
 
   ElmEmentProto.increment = function() {
     console.log('Increment!');
-    this.hello.ports.increment.send([]);
+    this.hello.ports.increment.send(null);
   };
 
   ElmEmentProto.attachedCallback = function() {
@@ -53,10 +58,7 @@
   ElmEmentProto.createdCallback = function() {
     var div = document.createElement('div');
     this.appendChild(div);
-    this.hello = Elm.embed(Elm.Hello, div, {
-      increment: [],
-      greeting: this.getAttribute("greeting"),
-    });
+    this.hello = Elm.Hello.embed(div);
   };
 
   ElmEmentProto.attributeChangedCallback = function(attribute, _, value) {
